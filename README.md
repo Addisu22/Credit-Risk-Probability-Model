@@ -11,6 +11,7 @@ Justifiable: Clearly explain predictions and features.
 Auditable: Reproducible with well-documented processes. 
 
 Thus, models like Logistic Regression with Weight of Evidence (WoE) are preferred due to their interpretability, especially in regulated environments.
+
 2. Why a Proxy Default Variable Is Needed (and Its Risks)
    -------------------------------------------------------
 In many real-world scenarios, a direct "default" label isn’t available. A proxy variable like "90+ days past due" or "loan written off" is used as a substitute.
@@ -30,6 +31,7 @@ Misalignment: Proxy definitions may not reflect true business risk.
 False positives/negatives: Can lead to bad lending decisions or rejection of good customers.
 
 Hence, business and data teams must collaboratively define and validate the proxy.
+
 3. Trade-Off: Interpretable vs. Complex Models
    -------------------------------------------
 Aspect	Interpretable (e.g., Logistic + WoE)	Complex (e.g., XGBoost, GBM)
