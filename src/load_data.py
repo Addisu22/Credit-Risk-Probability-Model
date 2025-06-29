@@ -4,8 +4,8 @@ import seaborn as sns
 
 def data_overview(df):
     print(" Dataset Overview")
-    print(f"Rows: {df.shape[0]}, Columns: {df.shape[1]}")
-    print("\nData Types:\n", df.dtypes)
+    # print(f"Rows: {df.shape[0]}, Columns: {df.shape[1]}")
+    print("\n Data Types:\n", df.dtypes)
 
 def summary_statistics(df):
     print("\n Summary Statistics")
