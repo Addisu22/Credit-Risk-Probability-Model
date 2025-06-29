@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def load_data(file_path):
+def load_dataeda(file_path):
     try:
         df = pd.read_csv(file_path)
         print(" Data loaded successfully.")
