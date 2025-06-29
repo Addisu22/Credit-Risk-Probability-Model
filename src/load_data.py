@@ -12,7 +12,7 @@ def load_data(file_path):
         print(" Error loading data:", e)
         return None
 
-df = load_data()
+# df = load_data()
 
 
 def data_overview(df):
