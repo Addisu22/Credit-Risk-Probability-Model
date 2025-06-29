@@ -2,10 +2,19 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+def load_data(file_path):
+    try:
+        df = pd.read_csv(file_path)
+        print(" Data loaded successfully.")
+        return df
+    except Exception as e:
+        print(" Error loading data:", e)
+        return None
+
 def data_overview(df):
-    print(" Dataset Overview")
-    # print(f"Rows: {df.shape[0]}, Columns: {df.shape[1]}")
-    print("\n Data Types:\n", df.dtypes)
+    print("\n Dataset Overview")
+    print(f"Rows: {df.shape[0]}, Columns: {df.shape[1]}")
+    print("\nData Types:\n", df.dtypes)
 
 def summary_statistics(df):
     print("\n Summary Statistics")
