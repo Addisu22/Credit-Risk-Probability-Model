@@ -1,84 +1,115 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from xgboost import XGBClassifier
-from sklearn.metrics import classification_report, roc_auc_score
+from sklearn.exceptions import NotFittedError
 
-def train_and_evaluate_models(data_path):
+# ----------------------------------------
+#  Load and preprocess raw credit data
+# ----------------------------------------
+def preprocess_raw_data(df):
     try:
-        # 1. Load data
-        df = pd.read_csv(data_path)
-        
-        # 2. Select features and target
-        features = [
-            'accountid', 'subscriptionid', 'customerid',
-            'currencycode', 'countrycode', 'providerid', 'productid',
-            'productcategory', 'channelid', 'amount', 'value',
-            'transactionstarttime', 'pricingstrategy'
+        print(" Cleaning and transforming raw data...")
+
+        # Convert to datetime
+        df['TransactionStartTime'] = pd.to_datetime(df['TransactionStartTime'], errors='coerce')
+
+        # Drop duplicates
+        df.drop_duplicates(inplace=True)
+
+        # Drop rows with missing TransactionStartTime
+        df = df.dropna(subset=['TransactionStartTime'])
+
+        # Extract temporal features
+        df['TransactionHour'] = df['TransactionStartTime'].dt.hour
+        df['TransactionDay'] = df['TransactionStartTime'].dt.day
+        df['TransactionMonth'] = df['TransactionStartTime'].dt.month
+        df['TransactionYear'] = df['TransactionStartTime'].dt.year
+
+        # Drop original timestamp
+        df.drop(columns=['TransactionStartTime'], inplace=True)
+
+        # Aggregate features per customer
+        agg_df = df.groupby('CustomerId').agg({
+            'Amount': ['sum', 'mean', 'count', 'std'],
+            'Value': 'mean',
+            'TransactionHour': 'mean'
+        }).reset_index()
+
+        agg_df.columns = ['CustomerId', 'TotalTransactionAmount', 'AvgTransactionAmount', 'TransactionCount',
+                          'StdTransactionAmount', 'AvgValue', 'AvgHour']
+
+        # Merge back aggregated features
+        df = df.merge(agg_df, on='CustomerId', how='left')
+
+        print(" Preprocessing complete.")
+        return df
+
+    except Exception as e:
+        print(f" Error during preprocessing: {e}")
+        return None
+
+
+# ----------------------------------------
+#  Build preprocessing pipeline
+# ----------------------------------------
+def build_preprocessing_pipeline(df):
+    try:
+        # Define feature groups
+        numeric_features = [
+            'Amount', 'Value', 'TransactionHour', 'TransactionDay',
+            'TransactionMonth', 'TransactionYear', 'TotalTransactionAmount',
+            'AvgTransactionAmount', 'TransactionCount', 'StdTransactionAmount', 'AvgValue', 'AvgHour'
         ]
-        target = 'fraudresult'
-        
-        # 3. Extract datetime features
-        df['transactionstarttime'] = pd.to_datetime(df['transactionstarttime'])
-        df['TransactionHour'] = df['transactionstarttime'].dt.hour
-        df['TransactionDay'] = df['transactionstarttime'].dt.day
-        df['TransactionMonth'] = df['transactionstarttime'].dt.month
-        df['TransactionYear'] = df['transactionstarttime'].dt.year
-        
-        features.remove('transactionstarttime')
-        features.extend(['TransactionHour', 'TransactionDay', 'TransactionMonth', 'TransactionYear'])
-        
-        X = df[features]
-        y = df[target]
-        
-        # 4. Define numeric and categorical columns
-        numeric_features = ['amount', 'value', 'TransactionHour', 'TransactionDay', 'TransactionMonth', 'TransactionYear']
-        categorical_features = list(set(features) - set(numeric_features))
-        
-        # 5. Build preprocessing pipelines
+
+        categorical_features = [
+            'AccountId', 'SubscriptionId', 'CustomerId', 'CurrencyCode',
+            'CountryCode', 'ProviderId', 'ProductId', 'ProductCategory',
+            'ChannelId', 'PricingStrategy'
+        ]
+
+        # Define numeric pipeline
         numeric_pipeline = Pipeline([
             ('imputer', SimpleImputer(strategy='mean')),
             ('scaler', StandardScaler())
         ])
+
+        # Define categorical pipeline
         categorical_pipeline = Pipeline([
             ('imputer', SimpleImputer(strategy='most_frequent')),
-            ('onehot', OneHotEncoder(handle_unknown='ignore'))
+            ('encoder', OneHotEncoder(handle_unknown='ignore'))
         ])
+
+        # Full preprocessing pipeline
         preprocessor = ColumnTransformer([
-            ('numerical', numeric_pipeline, numeric_features),
-            ('categorical', categorical_pipeline, categorical_features)
+            ('num', numeric_pipeline, numeric_features),
+            ('cat', categorical_pipeline, categorical_features)
         ])
-        
-        # 6. Split data
-        X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=0.2, random_state=42)
-        
-        # 7. Define models
-        models = {
-            'LogisticRegression': LogisticRegression(max_iter=1000),
-            'RandomForest': RandomForestClassifier(n_estimators=100, random_state=42),
-            'XGBoost': XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42)
-        }
-        
-        # 8. Train, predict and evaluate
-        for name, model in models.items():
-            print(f"\n Model: {name}")
-            pipeline = Pipeline([
-                ('preprocessing', preprocessor),
-                ('classifier', model)
-            ])
-            pipeline.fit(X_train, y_train)
-            y_pred = pipeline.predict(X_test)
-            y_proba = pipeline.predict_proba(X_test)[:, 1]
-            
-            print(" Classification Report:")
-            print(classification_report(y_test, y_pred))
-            print("ROC-AUC Score:", round(roc_auc_score(y_test, y_proba), 4))
-    
+
+        final_features = numeric_features + categorical_features
+        return preprocessor, final_features
+
     except Exception as e:
-        print(" Error during model training or evaluation:", e)
+        print(f" Error building pipeline: {e}")
+        return None, None
+
+
+# ----------------------------------------
+#  Access function for processing + pipeline
+# ----------------------------------------
+def prepare_data(df):
+    try:
+        df_clean = preprocess_raw_data(df)
+        if df_clean is None:
+            raise ValueError("Preprocessing failed, no clean DataFrame returned.")
+
+        pipeline, final_features = build_preprocessing_pipeline(df_clean)
+        if pipeline is None:
+            raise ValueError("Pipeline creation failed.")
+
+        return df_clean, pipeline, final_features
+    except Exception as e:
+        print(f"Error preparing data: {e}")
+        return None, None, None
