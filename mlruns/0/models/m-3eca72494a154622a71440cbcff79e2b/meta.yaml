@@ -1,0 +1,10 @@
+artifact_location: file:///d:/KAIM%205%2C6%2C7/Week-5/Credit-Risk-Probability-Model/mlruns/0/models/m-3eca72494a154622a71440cbcff79e2b/artifacts
+creation_timestamp: 1751319292332
+experiment_id: '0'
+last_updated_timestamp: 1751319294755
+model_id: m-3eca72494a154622a71440cbcff79e2b
+model_type: null
+name: RandomForest
+source_run_id: 65c5e2c41d83433a9128c80743d0b346
+status: 2
+status_message: null

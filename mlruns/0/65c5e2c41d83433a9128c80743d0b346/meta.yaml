@@ -1,0 +1,14 @@
+artifact_uri: file:///d:/KAIM%205%2C6%2C7/Week-5/Credit-Risk-Probability-Model/mlruns/0/65c5e2c41d83433a9128c80743d0b346/artifacts
+end_time: 1751319294782
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 65c5e2c41d83433a9128c80743d0b346
+run_name: RandomForest
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751319285603
+status: 3
+tags: []
+user_id: Belay

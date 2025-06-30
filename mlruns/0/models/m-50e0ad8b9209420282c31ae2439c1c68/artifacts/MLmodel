@@ -1,0 +1,44 @@
+artifact_path: file:///d:/KAIM%205%2C6%2C7/Week-5/Credit-Risk-Probability-Model/mlruns/0/models/m-50e0ad8b9209420282c31ae2439c1c68/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.0
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.0
+is_signature_from_type_hint: false
+mlflow_version: 3.1.1
+model_id: m-50e0ad8b9209420282c31ae2439c1c68
+model_size_bytes: 351481
+model_uuid: m-50e0ad8b9209420282c31ae2439c1c68
+prompts: null
+run_id: ce89a3bd120d449f9d5d8f8004b407d1
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "string", "name": "AccountId", "required": true}, {"type": "string",
+    "name": "SubscriptionId", "required": true}, {"type": "string", "name": "CustomerId",
+    "required": true}, {"type": "string", "name": "CurrencyCode", "required": true},
+    {"type": "long", "name": "CountryCode", "required": true}, {"type": "string",
+    "name": "ProviderId", "required": true}, {"type": "string", "name": "ProductId",
+    "required": true}, {"type": "string", "name": "ProductCategory", "required": true},
+    {"type": "string", "name": "ChannelId", "required": true}, {"type": "double",
+    "name": "Amount", "required": true}, {"type": "long", "name": "Value", "required":
+    true}, {"type": "integer", "name": "TransactionHour", "required": true}, {"type":
+    "integer", "name": "TransactionDay", "required": true}, {"type": "integer", "name":
+    "TransactionMonth", "required": true}, {"type": "integer", "name": "TransactionYear",
+    "required": true}, {"type": "long", "name": "PricingStrategy", "required": true}]'
+  outputs: '[{"type": "long", "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-06-30 21:34:55.963500'

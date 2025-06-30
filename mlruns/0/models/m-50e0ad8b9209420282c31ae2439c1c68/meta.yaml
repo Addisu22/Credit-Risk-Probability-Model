@@ -1,0 +1,10 @@
+artifact_location: file:///d:/KAIM%205%2C6%2C7/Week-5/Credit-Risk-Probability-Model/mlruns/0/models/m-50e0ad8b9209420282c31ae2439c1c68/artifacts
+creation_timestamp: 1751319295939
+experiment_id: '0'
+last_updated_timestamp: 1751319298381
+model_id: m-50e0ad8b9209420282c31ae2439c1c68
+model_type: null
+name: XGBoost
+source_run_id: ce89a3bd120d449f9d5d8f8004b407d1
+status: 2
+status_message: null

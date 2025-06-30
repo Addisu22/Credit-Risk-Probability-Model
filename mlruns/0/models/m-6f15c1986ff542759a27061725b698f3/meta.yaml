@@ -1,0 +1,10 @@
+artifact_location: file:///d:/KAIM%205%2C6%2C7/Week-5/Credit-Risk-Probability-Model/mlruns/0/models/m-6f15c1986ff542759a27061725b698f3/artifacts
+creation_timestamp: 1751319280869
+experiment_id: '0'
+last_updated_timestamp: 1751319285565
+model_id: m-6f15c1986ff542759a27061725b698f3
+model_type: null
+name: LogisticRegression
+source_run_id: 0027f8538bb4426cb322c3f9fc84ae44
+status: 2
+status_message: null

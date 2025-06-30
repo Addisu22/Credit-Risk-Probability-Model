@@ -1,0 +1,14 @@
+artifact_uri: file:///d:/KAIM%205%2C6%2C7/Week-5/Credit-Risk-Probability-Model/mlruns/0/ce89a3bd120d449f9d5d8f8004b407d1/artifacts
+end_time: 1751319298420
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: ce89a3bd120d449f9d5d8f8004b407d1
+run_name: XGBoost
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751319294787
+status: 3
+tags: []
+user_id: Belay
