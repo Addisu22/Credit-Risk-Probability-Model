@@ -11,20 +11,20 @@ from sklearn.impute import SimpleImputer
 
 def create_aggregate_features(df):
     try:
-        agg_df = df.groupby("customerid")["amount"].agg(
+        agg_df = df.groupby("CustomerId")["Amount"].agg(
             total_transaction_amount='sum',
             avg_transaction_amount='mean',
             transaction_count='count',
             std_transaction_amount='std'
         ).reset_index()
-        df = df.merge(agg_df, on="customerid", how="left")
+        df = df.merge(agg_df, on="CustomerId", how="left")
         return df
     except Exception as e:
         print(f"Error in create_aggregate_features: {e}")
         raise
 
 
-def extract_datetime_features(df, time_col="transactionstarttime"):
+def extract_datetime_features(df, time_col="TransactionStartTime"):
     try:
         df[time_col] = pd.to_datetime(df[time_col], errors="coerce")
         df["transaction_hour"] = df[time_col].dt.hour
@@ -81,16 +81,16 @@ def prepare_data(df):
         df = clean_and_engineer(df)
 
         numeric_features = [
-            "amount", "value",
+            "Amount", "Value",
             "transaction_hour", "transaction_day", "transaction_month", "transaction_year",
             "total_transaction_amount", "avg_transaction_amount",
             "transaction_count", "std_transaction_amount"
         ]
 
         categorical_features = [
-            "accountid", "subscriptionid", "customerid", "currencycode",
-            "countrycode", "providerid", "productid", "productcategory",
-            "channelid", "pricingstrategy"
+            "AccountId", "SubscriptionId", "CustomerId", "CurrencyCode",
+            "CountryCode", "ProviderId", "ProductId", "ProductCategory",
+            "ChannelId", "PricingStrategy"
         ]
 
         pipeline = build_preprocessing_pipeline(numeric_features, categorical_features)
