@@ -62,9 +62,9 @@ def feature_engineering(df):
         scaler = StandardScaler()
         df[numeric_cols] = scaler.fit_transform(df[numeric_cols])
 
-        print("✅ Feature engineering completed successfully.")
+        print(" Feature engineering completed successfully.")
         return df
 
     except Exception as e:
-        print(f"❌ Error during feature engineering: {e}")
+        print(f" Error during feature engineering: {e}")
         return None
