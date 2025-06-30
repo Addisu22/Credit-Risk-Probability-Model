@@ -123,27 +123,3 @@ def train_and_track(X_train, X_test, y_train, y_test, model_name, model):
             print(f" {model_name} model trained and tracked in MLflow")
     except Exception as e:
         print(f" Error in model training ({model_name}): {e}")
-
-# ------------------------------
-# 6. Main Access
-# ------------------------------
-def main(file_path):
-    df = load_data(file_path)
-    if df is None: return
-
-    df = preprocess_data(df)
-    if df is None: return
-
-    X, y = split_features_target(df)
-    if X is None or y is None: return
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=0.2, random_state=42)
-
-    models = {
-        "LogisticRegression": LogisticRegression(max_iter=1000),
-        "RandomForest": RandomForestClassifier(n_estimators=100, random_state=42),
-        "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42)
-    }
-
-    for name, model in models.items():
-        train_and_track(X_train, X_test, y_train, y_test, name, model)
