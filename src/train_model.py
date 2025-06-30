@@ -17,28 +17,28 @@ def train_and_evaluate_models(data_path):
         
         # 2. Select features and target
         features = [
-            'AccountId', 'SubscriptionId', 'CustomerId',
-            'CurrencyCode', 'CountryCode', 'ProviderId', 'ProductId',
-            'ProductCategory', 'ChannelId', 'Amount', 'Value',
-            'TransactionStartTime', 'PricingStrategy'
+            'accountid', 'subscriptionid', 'customerid',
+            'currencycode', 'countryCode', 'providerid', 'productid',
+            'productcategory', 'channelid', 'amount', 'value',
+            'transactionstarttime', 'pricingstrategy'
         ]
-        target = 'FraudResult'
+        target = 'fraudresult'
         
         # 3. Extract datetime features
-        df['TransactionStartTime'] = pd.to_datetime(df['TransactionStartTime'])
-        df['TransactionHour'] = df['TransactionStartTime'].dt.hour
-        df['TransactionDay'] = df['TransactionStartTime'].dt.day
-        df['TransactionMonth'] = df['TransactionStartTime'].dt.month
-        df['TransactionYear'] = df['TransactionStartTime'].dt.year
+        df['transactionstarttime'] = pd.to_datetime(df['transactionstarttime'])
+        df['TransactionHour'] = df['transactionstarttime'].dt.hour
+        df['TransactionDay'] = df['transactionstarttime'].dt.day
+        df['TransactionMonth'] = df['transactionstarttime'].dt.month
+        df['TransactionYear'] = df['transactionstarttime'].dt.year
         
-        features.remove('TransactionStartTime')
+        features.remove('transactionstarttime')
         features.extend(['TransactionHour', 'TransactionDay', 'TransactionMonth', 'TransactionYear'])
         
         X = df[features]
         y = df[target]
         
         # 4. Define numeric and categorical columns
-        numeric_features = ['Amount', 'Value', 'TransactionHour', 'TransactionDay', 'TransactionMonth', 'TransactionYear']
+        numeric_features = ['amount', 'value', 'TransactionHour', 'TransactionDay', 'TransactionMonth', 'TransactionYear']
         categorical_features = list(set(features) - set(numeric_features))
         
         # 5. Build preprocessing pipelines
