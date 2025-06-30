@@ -63,3 +63,39 @@ def detect_outliers(df, num_cols):
         plt.tight_layout()
         plt.show()
 
+def clean_raw_data(df):
+    # 1. Drop duplicate rows
+    df = df.drop_duplicates()
+
+    # 2. Remove columns with all missing values
+    df = df.dropna(axis=1, how='all')
+
+    # 3. Handle missing values (example: fill with mean for numeric, mode for categorical)
+    for col in df.columns:
+        if df[col].dtype in ['int64', 'float64']:
+            df[col].fillna(df[col].mean(), inplace=True)
+        else:
+            df[col].fillna(df[col].mode()[0], inplace=True)
+
+    # 4. Standardize column names (optional: lower case, no spaces)
+    df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_')
+
+    # 5. Convert date columns (if known or guessed)
+    for col in df.columns:
+        if 'date' in col or 'time' in col:
+            try:
+                df[col] = pd.to_datetime(df[col])
+            except:
+                pass
+
+    # 6. Remove non-numeric characters from numeric columns (if any)
+    for col in df.select_dtypes(include='object').columns:
+        if df[col].str.replace('.', '', 1).str.isnumeric().all():
+            df[col] = pd.to_numeric(df[col])
+
+    # 7. Optional: Remove outliers or invalid entries
+    # Example: remove rows where Amount < 0
+    if 'amount' in df.columns:
+        df = df[df['amount'] >= 0]
+
+    return df
