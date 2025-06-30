@@ -18,7 +18,7 @@ def train_and_evaluate_models(data_path):
         # 2. Select features and target
         features = [
             'accountid', 'subscriptionid', 'customerid',
-            'currencycode', 'countryCode', 'providerid', 'productid',
+            'currencycode', 'countrycode', 'providerid', 'productid',
             'productcategory', 'channelid', 'amount', 'value',
             'transactionstarttime', 'pricingstrategy'
         ]
