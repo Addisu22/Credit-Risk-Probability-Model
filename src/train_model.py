@@ -59,16 +59,13 @@ def build_preprocessing_pipeline(df):
     try:
         # Define feature groups
         numeric_features = [
-            'Amount', 'Value', 'TransactionHour', 'TransactionDay',
-            'TransactionMonth', 'TransactionYear', 'TotalTransactionAmount',
-            'AvgTransactionAmount', 'TransactionCount', 'StdTransactionAmount', 'AvgValue', 'AvgHour'
-        ]
+            'Amount', 'Value']
+        # , 'TransactionHour', 'TransactionDay',         'TransactionMonth', 'TransactionYear', 'TotalTransactionAmount',          'AvgTransactionAmount', 'TransactionCount', 'StdTransactionAmount', 'AvgValue', 'AvgHour'        ]
 
         categorical_features = [
-            'AccountId', 'SubscriptionId', 'CustomerId', 'CurrencyCode',
-            'CountryCode', 'ProviderId', 'ProductId', 'ProductCategory',
-            'ChannelId', 'PricingStrategy'
-        ]
+            # 'AccountId', 'SubscriptionId', 'CustomerId', 
+            'CurrencyCode',  'CountryCode']
+        # , 'ProviderId', 'ProductId', 'ProductCategory',           'ChannelId', 'PricingStrategy'        ]
 
         # Define numeric pipeline
         numeric_pipeline = Pipeline([
@@ -84,7 +81,7 @@ def build_preprocessing_pipeline(df):
 
         # Full preprocessing pipeline
         preprocessor = ColumnTransformer([
-            ('num', numeric_pipeline, numeric_features),
+            ('numer', numeric_pipeline, numeric_features),
             ('cat', categorical_pipeline, categorical_features)
         ])
 
