@@ -1,0 +1,14 @@
+artifact_uri: file:///d:/KAIM%205%2C6%2C7/Week-5/Credit-Risk-Probability-Model/mlruns/180129313510078606/6f31d0d1dcf84deaaf6591e1f31b0b1e/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '180129313510078606'
+lifecycle_stage: active
+run_id: 6f31d0d1dcf84deaaf6591e1f31b0b1e
+run_name: LogisticRegression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751396794665
+status: 1
+tags: []
+user_id: Belay
